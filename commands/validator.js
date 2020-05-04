@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'validator [validator-name] [addon-name]';
+
+module.exports.desc = 'Copy a validator from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('validator-name', {
+    describe: 'The name of the validator to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('validator-folder', {
+    describe: 'The name of the validator folder if it is namespaced within app/validators',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [validator-name] [engine-name] [validator-folder] --dry-run')
@@ -8,7 +26,7 @@ const argv  =  require('yargs')
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
 const { dryRun } = argv;
 const validatorPath = 'app/validators';
@@ -72,3 +90,5 @@ if (!dryRun) {
       console.error(err);
     });
 }
+};
+

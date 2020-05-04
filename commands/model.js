@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'model [model-name] [addon-name]';
+
+module.exports.desc = 'Copy a model from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('model-name', {
+    describe: 'The name of the model to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('model-folder', {
+    describe: 'The name of the model folder if it is namespaced within app/models',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [model-name] [engine-name] [model-folder] --dry-run')
@@ -8,7 +26,7 @@ const argv  =  require('yargs')
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
 const { dryRun } = argv;
 const modelPath = 'app/models';
@@ -72,3 +90,4 @@ if (!dryRun) {
       console.error(err);
     });
 }
+};

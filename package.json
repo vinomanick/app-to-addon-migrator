@@ -1,15 +1,27 @@
 {
   "name": "app-to-addon-migrator",
   "version": "1.0.0",
-  "description": "",
+  "description": "An opinionated cli tool to migrate Ember components from app to addons within a Yarn workspace.
+",
   "main": "index.js",
+  "bin": {
+    "atam": "./bin/cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Rajasegar Chandran <rajasegar.c@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "chalk": "^4.0.0",
+    "fs-extra": "^9.0.0",
     "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

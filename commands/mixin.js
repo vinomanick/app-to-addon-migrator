@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'mixin [mixin-name] [addon-name]';
+
+module.exports.desc = 'Copy a mixin from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('mixin-name', {
+    describe: 'The name of the mixin to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('mixin-folder', {
+    describe: 'The name of the mixin folder if it is namespaced within app/mixins',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [mixin-folder] [mixin-name] [engine-name] --dry-run')
@@ -8,7 +26,7 @@ const argv  =  require('yargs')
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
 const { dryRun } = argv;
 const mixinPath = 'app/mixins';
@@ -52,4 +70,4 @@ if (!dryRun) {
     warning(`WARNING: There are no unit tests for mixin ${mixinName}`);
   }
 }
-
+};

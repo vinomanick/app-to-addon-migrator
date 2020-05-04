@@ -1,27 +1,37 @@
-#!/usr/bin/env node
+'use strict';
 
-const argv  =  require('yargs')
-  .usage('Usage: $0 [adapter-name] [engine-name] [adapter-folder] --dry-run')
-  .demand(2)
-  .alias('d', 'dry-run')
-  .argv;
+module.exports.command = 'adapter <adapter-name> <addon-name>';
+module.exports.desc = 'Copy an adapter from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('adapter-name', {
+    describe: 'The name of the adapter to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('adapter-folder', {
+    describe: 'The name of the adapter folder if it is namespaced within app/adapters',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 const adapterPath = 'app/adapters';
 const packagePath = 'packages/engines';
 
-const [adapterName, engineName, adapterFolder] = argv._;
+const {adapterName, addonName, adapterFolder, dryRun} = options;
 
 // Moving adapter.js
 log('Moving adapter.js');
 log('---------------');
 const sourceadapter = adapterFolder ? `${adapterPath}/${adapterFolder}/${adapterName}.js`
   : `${adapterPath}/${adapterName}.js`;
-const destadapter = `${packagePath}/${engineName}/addon/adapters/${adapterName}.js`;
+const destadapter = `${packagePath}/${addonName}/addon/adapters/${adapterName}.js`;
 
 log(sourceadapter);
 log(destadapter);
@@ -39,7 +49,7 @@ log('\nMoving adapter tests');
 log('------------------');
 const sourceTest = adapterFolder ? `tests/unit/adapters/${adapterFolder}/${adapterName}-test.js`
   : `tests/unit/adapters/${adapterName}-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/unit/adapters/${adapterName}-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/unit/adapters/${adapterName}-test.js`;
 
 log(sourceTest);
 log(destTest);
@@ -60,8 +70,8 @@ if (!dryRun) {
 log('\nCreating adapter assets in app folder ');
 log('----------------------------------- ');
 
-const appadapter = `${packagePath}/${engineName}/app/adapters/${adapterName}.js`;
-const adapterBody = `export { default } from '${engineName}/adapters/${adapterName}';`;
+const appadapter = `${packagePath}/${addonName}/app/adapters/${adapterName}.js`;
+const adapterBody = `export { default } from '${addonName}/adapters/${adapterName}';`;
 log(appadapter);
 if (!dryRun) {
   fse.outputFile(appadapter, adapterBody)
@@ -72,3 +82,5 @@ if (!dryRun) {
       console.error(err);
     });
 }
+
+};

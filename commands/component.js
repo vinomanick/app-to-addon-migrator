@@ -1,20 +1,32 @@
-#!/usr/bin/env node
+'use strict';
 
-const argv  =  require('yargs')
-  .usage('Usage: $0 [component-folder] [component-name] [engine-name] --dry-run')
-  .demand(3)
-  .alias('d', 'dry-run')
-  .argv;
+module.exports.command = 'component [component-name] [addon-name]';
+
+module.exports.desc = 'Copy a component from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('component-name', {
+    describe: 'The name of the component to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('component-folder', {
+    describe: 'The name of the component folder if it is namespaced within app/components',
+  });
+};
+
+module.exports.handler = async function handler(options) {
+
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 const componentPath = 'app/components';
 const packagePath = 'packages/engines';
 
-const [componentFolder, componentName, engineName] = argv._;
+const {componentFolder, componentName, engineName, dryRun} = options;
 
 // Moving component.js
 // IMPORTANT NOTE: We're deliberately avoiding POD structure in engines
@@ -91,3 +103,4 @@ if (!dryRun) {
     });
 }
 
+};

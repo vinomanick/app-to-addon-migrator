@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'storage [storage-name] [addon-name]';
+
+module.exports.desc = 'Copy a storage from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('storage-name', {
+    describe: 'The name of the storage to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('storage-folder', {
+    describe: 'The name of the storage folder if it is namespaced within app/storages',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [storage-name] [engine-name] [storage-folder] --dry-run')
@@ -7,7 +25,7 @@ const argv  =  require('yargs')
   .argv;
 
 const fse = require('fs-extra');
-const { log,  error, ok } = require('./logging');
+const { log,  error, ok } = require('../utils/logging');
 
 const { dryRun } = argv;
 const storagePath = 'app/storages';
@@ -31,5 +49,7 @@ if (!dryRun) {
       ok(`Success: storage ${storageName}.js copied`);
     })
     .catch((err) => error(err));
+
 }
+};
 

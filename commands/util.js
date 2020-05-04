@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'util [util-name] [addon-name]';
+
+module.exports.desc = 'Copy a util from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('util-name', {
+    describe: 'The name of the util to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('util-folder', {
+    describe: 'The name of the util folder if it is namespaced within app/utils',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [util-name] [engine-name] [util-folder] --dry-run')
@@ -8,7 +26,7 @@ const argv  =  require('yargs')
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
 const { dryRun } = argv;
 const utilPath = 'app/utils';
@@ -72,3 +90,5 @@ if (!dryRun) {
       console.error(err);
     });
 }
+
+};

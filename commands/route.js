@@ -1,4 +1,22 @@
-#!/usr/bin/env node
+'use strict';
+
+module.exports.command = 'route [route-name] [addon-name]';
+
+module.exports.desc = 'Copy a route from app to addon';
+
+module.exports.builder = function builder(yargs) {
+  yargs.positional('route-name', {
+    describe: 'The name of the route to copy',
+  })
+  yargs.positional('addon-name', {
+    describe: 'The name of the addon folder to copy to',
+  })
+  yargs.positional('route-folder', {
+    describe: 'The name of the route folder if it is namespaced within app/routes',
+  });
+};
+
+module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
   .usage('Usage: $0 [route-folder] [route-name] [engine-name] --dry-run')
@@ -9,7 +27,7 @@ const argv  =  require('yargs')
 const fs = require('fs');
 const fse = require('fs-extra');
 
-const { log, error, ok, warning } = require('./logging');
+const { log, error, ok, warning } = require('../utils/logging');
 
 const { dryRun } = argv;
 
@@ -166,3 +184,5 @@ if (!dryRun) {
     warning(`WARNING: There were no tests for ${routeName} controller`);
   }
 }
+
+};
