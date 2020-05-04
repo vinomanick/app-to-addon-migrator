@@ -11,9 +11,6 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('validator-folder', {
-    describe: 'The name of the validator folder if it is namespaced within app/validators',
-  });
 };
 
 module.exports.handler = async function handler(options) {

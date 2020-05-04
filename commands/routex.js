@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports.command = 'route [route-name] [addon-name]';
+module.exports.command = 'routex [route-name] [addon-name]';
 
-module.exports.desc = 'Copy a route from app to addon';
+module.exports.desc = 'Copy a route and its dependent components from app to addon';
 
 module.exports.builder = function builder(yargs) {
   yargs.positional('route-name', {
@@ -11,18 +11,16 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('route-folder', {
-    describe: 'The name of the route folder if it is namespaced within app/routes',
-  });
+yargs.option('route-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the route folder if it is namespaced within app/helpers',
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
 
-const argv  =  require('yargs')
-  .usage('Usage: $0 [route-folder] [route-name] [engine-name] --dry-run')
-  .demand(3)
-  .alias('d', 'dry-run')
-  .argv;
 
 const fs = require('fs');
 const fse = require('fs-extra');
@@ -32,7 +30,6 @@ const fuzzy = require('fuzzy');
 const { transform } = require('ember-template-recast');
 const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 
 const routePath = 'app/routes/helpdesk';
 const templatePath = 'app/templates/helpdesk';
@@ -41,16 +38,19 @@ const testPath = 'tests/unit/routes/helpdesk';
 const controllerPath = 'app/controllers/helpdesk';
 const controllerTestPath = 'tests/unit/controllers/helpdesk';
 
-const routeFolder = argv._[0];
-const routeName = argv._[1];
-const engineName = argv._[2];
+
+  const { routeName, addonName, routeFolder, dryRun } = options;
 
 // Moving route.js
 log('Moving route.js');
 log('---------------');
-const sourceRoute = `${routePath}/${routeFolder}/${routeName}.js`;
+  const sourceRoute = routeFolder ? 
+    `${routePath}/${routeFolder}/${routeName}.js`
+    : `${routePath}/${routeName}.js`;
 
-const sourceTemplate = `${templatePath}/${routeFolder}/${routeName}.hbs`;
+  const sourceTemplate = routeFolder ? 
+    `${templatePath}/${routeFolder}/${routeName}.hbs`
+    : `${templatePath}/${routeName}.hbs`;
 
 let components = [];
 

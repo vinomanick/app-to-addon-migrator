@@ -11,34 +11,33 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('mixin-folder', {
-    describe: 'The name of the mixin folder if it is namespaced within app/mixins',
-  });
+
+  yargs.option('mixin-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the mixin folder if it is namespaced within app/helpers',
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
-
-const argv  =  require('yargs')
-  .usage('Usage: $0 [mixin-folder] [mixin-name] [engine-name] --dry-run')
-  .demand(3)
-  .alias('d', 'dry-run')
-  .argv;
 
 const fs = require('fs');
 const fse = require('fs-extra');
 const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 const mixinPath = 'app/mixins';
 const packagePath = 'packages/engines';
 
-const [mixinFolder, mixinName, engineName] = argv._;
+const {mixinFolder, mixinName, addonName, dryRun} = options;
 
 // Moving mixin.js
 log('Moving mixin.js');
 log('---------------');
-const sourcemixin = `${mixinPath}/${mixinFolder}/${mixinName}.js`;
-const destmixin = `${packagePath}/${engineName}/addon/mixins/${mixinName}.js`;
+  const sourcemixin = mixinFolder ? 
+    `${mixinPath}/${mixinFolder}/${mixinName}.js`
+    : `${mixinPath}/${mixinName}.js`;
+const destmixin = `${packagePath}/${addonName}/addon/mixins/${mixinName}.js`;
 
 log(sourcemixin);
 log(destmixin);
@@ -54,8 +53,10 @@ if (!dryRun) {
 // Moving mixin tests
 log('\nMoving mixin tests');
 log('------------------');
-const sourceTest = `tests/unit/mixins/${mixinFolder}/${mixinName}-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/unit/mixins/${mixinName}-test.js`;
+const sourceTest = mixinFolder ? 
+`tests/unit/mixins/${mixinFolder}/${mixinName}-test.js`
+: `tests/unit/mixins/${mixinName}-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/unit/mixins/${mixinName}-test.js`;
 
 log(sourceTest);
 log(destTest);

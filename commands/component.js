@@ -11,9 +11,13 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('component-folder', {
-    describe: 'The name of the component folder if it is namespaced within app/components',
-  });
+
+yargs.option('component-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the component folder if it is namespaced within app/helpers',
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
@@ -26,7 +30,7 @@ const { log, error, ok, warning } = require('../utils/logging');
 const componentPath = 'app/components';
 const packagePath = 'packages/engines';
 
-const {componentFolder, componentName, engineName, dryRun} = options;
+const {componentFolder, componentName, addonName, dryRun} = options;
 
 // Moving component.js
 // IMPORTANT NOTE: We're deliberately avoiding POD structure in engines
@@ -34,8 +38,9 @@ const {componentFolder, componentName, engineName, dryRun} = options;
 // from a single folder
 log('Moving component.js');
 log('---------------');
-const sourceComponent = `${componentPath}/${componentFolder}/${componentName}/component.js`;
-const destComponent = `${packagePath}/${engineName}/addon/components/${componentName}.js`;
+  const sourceComponent = componentFolder ? `${componentPath}/${componentFolder}/${componentName}/component.js`
+  : `${componentPath}/${componentName}/component.js`;
+const destComponent = `${packagePath}/${addonName}/addon/components/${componentName}.js`;
 
 log(sourceComponent);
 log(destComponent);
@@ -51,8 +56,10 @@ if (!dryRun) {
 // Moving component template.hbs
 log('\nMoving component template.hbs');
 log('-------------------------');
-const sourceTemplate = `${componentPath}/${componentFolder}/${componentName}/template.hbs`;
-const destTemplate = `${packagePath}/${engineName}/addon/templates/components/${componentName}.hbs`;
+const sourceTemplate = componentFolder ? 
+`${componentPath}/${componentFolder}/${componentName}/template.hbs`
+: `${componentPath}/${componentName}/template.hbs`;
+const destTemplate = `${packagePath}/${addonName}/addon/templates/components/${componentName}.hbs`;
 
 log(sourceTemplate);
 log(destTemplate);
@@ -68,8 +75,10 @@ if (!dryRun) {
 // Moving component tests
 log('\nMoving component tests');
 log('------------------');
-const sourceTest = `tests/integration/components/${componentFolder}/${componentName}/component-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/integration/components/${componentName}-test.js`;
+const sourceTest = componentFolder ? 
+`tests/integration/components/${componentFolder}/${componentName}/component-test.js`
+: `tests/integration/components/${componentName}/component-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/integration/components/${componentName}-test.js`;
 
 log(sourceTest);
 log(destTest);
@@ -90,8 +99,8 @@ if (!dryRun) {
 log('\nCreating component assets in app folder ');
 log('----------------------------------- ');
 
-const appComponent = `${packagePath}/${engineName}/app/components/${componentName}.js`;
-const appComponentContent = `export { default } from '${engineName}/components/${componentName}';`;
+const appComponent = `${packagePath}/${addonName}/app/components/${componentName}.js`;
+const appComponentContent = `export { default } from '${addonName}/components/${componentName}';`;
 log(appComponent);
 if (!dryRun) {
   fse.outputFile(appComponent, appComponentContent)

@@ -2,7 +2,7 @@
 
 module.exports.command = 'route [route-name] [addon-name]';
 
-module.exports.desc = 'Copy a route from app to addon';
+module.exports.desc = 'Copy a route with controller from app to addon';
 
 module.exports.builder = function builder(yargs) {
   yargs.positional('route-name', {
@@ -11,25 +11,23 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('route-folder', {
-    describe: 'The name of the route folder if it is namespaced within app/routes',
-  });
+
+yargs.option('route-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the route folder if it is namespaced within app/helpers',
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
-
-const argv  =  require('yargs')
-  .usage('Usage: $0 [route-folder] [route-name] [engine-name] --dry-run')
-  .demand(3)
-  .alias('d', 'dry-run')
-  .argv;
 
 const fs = require('fs');
 const fse = require('fs-extra');
 
 const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
+const { routeName, addonName, routeFolder,dryRun } = options;
 
 const routePath = 'app/routes/helpdesk';
 const templatePath = 'app/templates/helpdesk';
@@ -38,15 +36,12 @@ const testPath = 'tests/unit/routes/helpdesk';
 const controllerPath = 'app/controllers/helpdesk';
 const controllerTestPath = 'tests/unit/controllers/helpdesk';
 
-const routeFolder = argv._[0];
-const routeName = argv._[1];
-const engineName = argv._[2];
 
 // Moving route.js
 log('Moving route.js');
 log('---------------');
 const sourceRoute = `${routePath}/${routeFolder}/${routeName}.js`;
-const destRoute = `${packagePath}/${engineName}/addon/routes/${routeName}.js`;
+const destRoute = `${packagePath}/${addonName}/addon/routes/${routeName}.js`;
 
 log(sourceRoute);
 log(destRoute);
@@ -64,7 +59,7 @@ log('\n\nMoving route template.hbs');
 log('-------------------------');
 const sourceTemplate = `${templatePath}/${routeFolder}/${routeName}.hbs`;
 
-const destTemplate = `${packagePath}/${engineName}/addon/templates/${routeName}.hbs`;
+const destTemplate = `${packagePath}/${addonName}/addon/templates/${routeName}.hbs`;
 
 log(sourceTemplate);
 log(destTemplate);
@@ -81,7 +76,7 @@ if (!dryRun) {
 log('\n\nMoving route tests');
 log('------------------');
 const sourceTest = `${testPath}/${routeFolder}/${routeName}-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/unit/routes/${routeName}-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/unit/routes/${routeName}-test.js`;
 log(sourceTest);
 log(destTest);
 
@@ -102,8 +97,8 @@ if (!dryRun) {
 log('\n\nCreating route assets in app folder ');
 log('----------------------------------- ');
 
-const appRoute = `${packagePath}/${engineName}/app/routes/${routeName}.js`;
-const appRouteContent = `export { default } from '${engineName}/routes/${routeName}';`;
+const appRoute = `${packagePath}/${addonName}/app/routes/${routeName}.js`;
+const appRouteContent = `export { default } from '${addonName}/routes/${routeName}';`;
 log(appRoute);
 if (!dryRun) {
   fse.outputFile(appRoute, appRouteContent)
@@ -115,8 +110,8 @@ if (!dryRun) {
     });
 }
 
-const appTemplate = `${packagePath}/${engineName}/app/templates/${routeName}.js`;
-const appTemplateContent = `export { default } from '${engineName}/templates/${routeName}';`;
+const appTemplate = `${packagePath}/${addonName}/app/templates/${routeName}.js`;
+const appTemplateContent = `export { default } from '${addonName}/templates/${routeName}';`;
 log(appTemplate);
 if (!dryRun) {
   fse.outputFile(appTemplate, appTemplateContent)
@@ -133,7 +128,7 @@ log('\nMoving controllers');
 log('------------------');
 
 const sourceController = `${controllerPath}/${routeFolder}/${routeName}.js`;
-const destController = `${packagePath}/${engineName}/addon/controllers/${routeName}.js`;
+const destController = `${packagePath}/${addonName}/addon/controllers/${routeName}.js`;
 
 log(sourceController);
 log(destController);
@@ -151,8 +146,8 @@ if (!dryRun) {
 log('\nCreating controller assets in app folder ');
 log('----------------------------------- ');
 
-const appController = `${packagePath}/${engineName}/app/controllers/${routeName}.js`;
-const controllerBody = `export { default } from '${engineName}/controllers/${routeName}';`;
+const appController = `${packagePath}/${addonName}/app/controllers/${routeName}.js`;
+const controllerBody = `export { default } from '${addonName}/controllers/${routeName}';`;
 
 log(appController);
 if (!dryRun) {
@@ -169,7 +164,7 @@ if (!dryRun) {
 log('\nMoving controller tests');
 log('------------------');
 const sourceControllerTest = `${controllerTestPath}/${routeFolder}/${routeName}-test.js`;
-const destControllerTest = `${packagePath}/${engineName}/tests/unit/controllers/${routeName}-test.js`;
+const destControllerTest = `${packagePath}/${addonName}/tests/unit/controllers/${routeName}-test.js`;
 log(sourceControllerTest);
 log(destControllerTest);
 if (!dryRun) {

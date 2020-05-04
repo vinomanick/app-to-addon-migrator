@@ -11,9 +11,13 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('constant-folder', {
-    describe: 'The name of the constant folder if it is namespaced within app/constants',
-  });
+
+yargs.option('constant-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the constant folder if it is namespaced within app/helpers',
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
