@@ -13,6 +13,13 @@ An opinionated cli tool to migrate Ember components from app to addons within a 
 
 ```
 
+## Assumptions made by this tool
+- Your Ember app lives in the root of your project folder.
+- Engines live under `packages/engines` folder.
+- Addons live under `packages/addons` folder.
+- You are using [Yarn workspaces]().
+- You are using [POD]() structure for your components.
+
 ## Install
 ```
 npm i -g app-to-addon-migrator
@@ -74,6 +81,17 @@ packages/engines/dashboards-engine/addon/templates/default.hbs
 Options:
   --version  Show version number                                       [boolean]
   --help     Show help                                                 [boolean]
+  --dry-run, -d  Dry Run: Verify the movement without executing        [boolean]
+  --pods, -p     Specify that the source components use PODS structure
+                                                       [boolean] [default: true]
 
 ```
 
+## References
+
+- http://ember-engines.com/
+- https://developer.squareup.com/blog/ember-and-yarn-workspaces/
+- https://medium.com/@lukedeniston/how-to-write-a-really-really-ambitious-spa-in-2019-60fc38de89db
+- https://github.com/lennyburdette/ember-monorepo-demo
+- https://discuss.emberjs.com/t/yarn-workspaces-and-ember/15672/13
+- https://github.com/habdelra/yarn-workface

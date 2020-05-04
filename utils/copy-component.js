@@ -10,7 +10,7 @@ module.exports = function (options) {
 const componentPath = 'app/components';
 const packagePath = 'packages/engines';
 
-const {componentFolder, componentName, addonName, dryRun} = options;
+const {componentFolder, componentName, addonName, dryRun, pods} = options;
 
 // Moving component.js
 // IMPORTANT NOTE: We're deliberately avoiding POD structure in engines
@@ -18,8 +18,18 @@ const {componentFolder, componentName, addonName, dryRun} = options;
 // from a single folder
 log('Moving component.js');
 log('---------------');
-  const sourceComponent = componentFolder ? `${componentPath}/${componentFolder}/${componentName}/component.js`
+  let sourceComponent;
+
+  if(pods) {
+
+   sourceComponent = componentFolder ? `${componentPath}/${componentFolder}/${componentName}/component.js`
   : `${componentPath}/${componentName}/component.js`;
+  } else {
+
+   sourceComponent = componentFolder ? `${componentPath}/${componentFolder}/${componentName}.js`
+  : `${componentPath}/${componentName}.js`;
+  }
+
 const destComponent = `${packagePath}/${addonName}/addon/components/${componentName}.js`;
 
 log(sourceComponent);
@@ -36,9 +46,19 @@ if (!dryRun) {
 // Moving component template.hbs
 log('\nMoving component template.hbs');
 log('-------------------------');
-const sourceTemplate = componentFolder ? 
+
+let sourceTemplate;
+if(pods) {
+
+ sourceTemplate = componentFolder ? 
 `${componentPath}/${componentFolder}/${componentName}/template.hbs`
 : `${componentPath}/${componentName}/template.hbs`;
+} else {
+
+ sourceTemplate = componentFolder ? 
+`app/templates/components/${componentFolder}/${componentName}.hbs`
+    : `app/templates/components/${componentName}.hbs`;
+}
 const destTemplate = `${packagePath}/${addonName}/addon/templates/components/${componentName}.hbs`;
 
 log(sourceTemplate);

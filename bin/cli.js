@@ -15,4 +15,11 @@ require('yargs')
     describe: 'Dry Run: Verify the movement without executing',
     type: 'boolean'
   })
+  .option('pods', {
+    alias: 'p',
+    demandOption: false,
+    describe: 'Specify that the source components use PODS structure',
+    type: 'boolean',
+    default: true
+  })
   .parse();
