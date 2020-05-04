@@ -40,7 +40,9 @@ const controllerTestPath = 'tests/unit/controllers/helpdesk';
 // Moving route.js
 log('Moving route.js');
 log('---------------');
-const sourceRoute = `${routePath}/${routeFolder}/${routeName}.js`;
+  const sourceRoute = routeFolder ? 
+    `${routePath}/${routeFolder}/${routeName}.js`
+    : `${routePath}/${routeName}.js`;
 const destRoute = `${packagePath}/${addonName}/addon/routes/${routeName}.js`;
 
 log(sourceRoute);
@@ -57,7 +59,9 @@ if (!dryRun) {
 // Moving route template.hbs
 log('\n\nMoving route template.hbs');
 log('-------------------------');
-const sourceTemplate = `${templatePath}/${routeFolder}/${routeName}.hbs`;
+const sourceTemplate = routeFolder ?
+`${templatePath}/${routeFolder}/${routeName}.hbs`
+: `${templatePath}${routeName}.hbs`;
 
 const destTemplate = `${packagePath}/${addonName}/addon/templates/${routeName}.hbs`;
 
@@ -75,7 +79,9 @@ if (!dryRun) {
 // Moving route tests
 log('\n\nMoving route tests');
 log('------------------');
-const sourceTest = `${testPath}/${routeFolder}/${routeName}-test.js`;
+const sourceTest = routeFolder ? 
+`${testPath}/${routeFolder}/${routeName}-test.js`
+: `${testPath}/${routeName}-test.js`;
 const destTest = `${packagePath}/${addonName}/tests/unit/routes/${routeName}-test.js`;
 log(sourceTest);
 log(destTest);
@@ -127,7 +133,9 @@ if (!dryRun) {
 log('\nMoving controllers');
 log('------------------');
 
-const sourceController = `${controllerPath}/${routeFolder}/${routeName}.js`;
+const sourceController = routeFolder ? 
+`${controllerPath}/${routeFolder}/${routeName}.js`
+: `${controllerPath}/${routeName}.js`;
 const destController = `${packagePath}/${addonName}/addon/controllers/${routeName}.js`;
 
 log(sourceController);
@@ -163,7 +171,9 @@ if (!dryRun) {
 // Moving controller tests
 log('\nMoving controller tests');
 log('------------------');
-const sourceControllerTest = `${controllerTestPath}/${routeFolder}/${routeName}-test.js`;
+const sourceControllerTest = routeFolder ? 
+`${controllerTestPath}/${routeFolder}/${routeName}-test.js`
+: `${controllerTestPath}/${routeName}-test.js`;
 const destControllerTest = `${packagePath}/${addonName}/tests/unit/controllers/${routeName}-test.js`;
 log(sourceControllerTest);
 log(destControllerTest);

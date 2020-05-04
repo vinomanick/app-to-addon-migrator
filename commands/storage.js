@@ -11,34 +11,33 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('storage-folder', {
+
+yargs.option('storage-folder', {
+        alias: 'f',
+        demandOption: false,
     describe: 'The name of the storage folder if it is namespaced within app/storages',
-  });
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
 
 const argv  =  require('yargs')
-  .usage('Usage: $0 [storage-name] [engine-name] [storage-folder] --dry-run')
-  .demand(2)
-  .alias('d', 'dry-run')
-  .argv;
-
+  
 const fse = require('fs-extra');
 const { log,  error, ok } = require('../utils/logging');
 
-const { dryRun } = argv;
 const storagePath = 'app/storages';
 const packagePath = 'packages/engines';
 
-const [storageName, engineName, storageFolder] = argv._;
+const {storageName, addonName, storageFolder, dryRun} = options;
 
 // Moving storage.js
 log('Moving storage.js');
 log('---------------');
 const sourcestorage = storageFolder ? `${storagePath}/${storageFolder}/${storageName}.js`
   : `${storagePath}/${storageName}.js`;
-const deststorage = `${packagePath}/${engineName}/app/storages/${storageName}.js`;
+const deststorage = `${packagePath}/${addonName}/app/storages/${storageName}.js`;
 
 log(sourcestorage);
 log(deststorage);

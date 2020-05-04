@@ -11,32 +11,34 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
+
+yargs.option('validator-folder', {
+        alias: 'f',
+        demandOption: false,
+    describe: 'The name of the validator folder if it is namespaced within app/validators',
+        type: 'string'
+    })
+
 };
 
 module.exports.handler = async function handler(options) {
 
-const argv  =  require('yargs')
-  .usage('Usage: $0 [validator-name] [engine-name] [validator-folder] --dry-run')
-  .demand(2)
-  .alias('d', 'dry-run')
-  .argv;
 
 const fs = require('fs');
 const fse = require('fs-extra');
 const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 const validatorPath = 'app/validators';
 const packagePath = 'packages/engines';
 
-const [validatorName, engineName, validatorFolder] = argv._;
+const {validatorName, addonName, validatorFolder, dryRun } = options;
 
 // Moving validator.js
 log('Moving validator.js');
 log('---------------');
 const sourcevalidator = validatorFolder ? `${validatorPath}/${validatorFolder}/${validatorName}.js`
   : `${validatorPath}/${validatorName}.js`;
-const destvalidator = `${packagePath}/${engineName}/addon/validators/${validatorName}.js`;
+const destvalidator = `${packagePath}/${addonName}/addon/validators/${validatorName}.js`;
 
 log(sourcevalidator);
 log(destvalidator);
@@ -54,7 +56,7 @@ log('\nMoving validator tests');
 log('------------------');
 const sourceTest = validatorFolder ? `tests/unit/validators/${validatorFolder}/${validatorName}-test.js`
   : `tests/unit/validators/${validatorName}-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/unit/validators/${validatorName}-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/unit/validators/${validatorName}-test.js`;
 
 log(sourceTest);
 log(destTest);
@@ -75,8 +77,8 @@ if (!dryRun) {
 log('\nCreating validator assets in app folder ');
 log('----------------------------------- ');
 
-const appvalidator = `${packagePath}/${engineName}/app/validators/${validatorName}.js`;
-const validatorBody = `export { default } from '${engineName}/validators/${validatorName}';`;
+const appvalidator = `${packagePath}/${addonName}/app/validators/${validatorName}.js`;
+const validatorBody = `export { default } from '${addonName}/validators/${validatorName}';`;
 log(appvalidator);
 if (!dryRun) {
   fse.outputFile(appvalidator, validatorBody)

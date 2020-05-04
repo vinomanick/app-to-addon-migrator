@@ -11,35 +11,32 @@ module.exports.builder = function builder(yargs) {
   yargs.positional('addon-name', {
     describe: 'The name of the addon folder to copy to',
   })
-  yargs.positional('util-folder', {
+
+yargs.option('util-folder', {
+        alias: 'f',
+        demandOption: false,
     describe: 'The name of the util folder if it is namespaced within app/utils',
-  });
+        type: 'string'
+    })
 };
 
 module.exports.handler = async function handler(options) {
-
-const argv  =  require('yargs')
-  .usage('Usage: $0 [util-name] [engine-name] [util-folder] --dry-run')
-  .demand(2)
-  .alias('d', 'dry-run')
-  .argv;
 
 const fs = require('fs');
 const fse = require('fs-extra');
 const { log, error, ok, warning } = require('../utils/logging');
 
-const { dryRun } = argv;
 const utilPath = 'app/utils';
 const packagePath = 'packages/engines';
 
-const [utilName, engineName, utilFolder] = argv._;
+const {utilName, addonName, utilFolder, dryRun } = options;
 
 // Moving util.js
 log('Moving util.js');
 log('---------------');
 const sourceutil = utilFolder ? `${utilPath}/${utilFolder}/${utilName}.js`
   : `${utilPath}/${utilName}.js`;
-const destutil = `${packagePath}/${engineName}/addon/utils/${utilName}.js`;
+const destutil = `${packagePath}/${addonName}/addon/utils/${utilName}.js`;
 
 log(sourceutil);
 log(destutil);
@@ -57,7 +54,7 @@ log('\nMoving util tests');
 log('------------------');
 const sourceTest = utilFolder ? `tests/unit/utils/${utilFolder}/${utilName}-test.js`
   : `tests/unit/utils/${utilName}-test.js`;
-const destTest = `${packagePath}/${engineName}/tests/unit/utils/${utilName}-test.js`;
+const destTest = `${packagePath}/${addonName}/tests/unit/utils/${utilName}-test.js`;
 
 log(sourceTest);
 log(destTest);
@@ -78,8 +75,8 @@ if (!dryRun) {
 log('\nCreating util assets in app folder ');
 log('----------------------------------- ');
 
-const apputil = `${packagePath}/${engineName}/app/utils/${utilName}.js`;
-const utilBody = `export { default } from '${engineName}/utils/${utilName}';`;
+const apputil = `${packagePath}/${addonName}/app/utils/${utilName}.js`;
+const utilBody = `export { default } from '${addonName}/utils/${utilName}';`;
 log(apputil);
 if (!dryRun) {
   fse.outputFile(apputil, utilBody)
