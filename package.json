@@ -6,6 +6,11 @@
   "bin": {
     "atam": "./bin/cli.js"
   },
+  "files": [
+    "bin",
+    "commands",
+    "utils"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "npm version patch && git push && git push --tags && npm publish"
