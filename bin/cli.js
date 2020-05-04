@@ -2,10 +2,17 @@
 'use strict';
 
 require('yargs')
-    .locale('en')
-    .commandDir('../commands')
-    .demandCommand()
-    .help()
-    .epilog('For more information, see https://github.com/rajasegar/app-to-addon-migrator')
-    .alias('d', 'dry-run')
-    .parse();
+  .locale('en')
+  .scriptName("atam")
+  .commandDir('../commands')
+  .demandCommand()
+  .help()
+  .usage('atam <command> <params> <options>')
+  .epilog('For more information, see https://github.com/rajasegar/app-to-addon-migrator')
+  .option('dry-run', {
+    alias: 'd',
+    demandOption: false,
+    describe: 'Dry Run: Verify the movement without executing',
+    type: 'boolean'
+  })
+  .parse();
