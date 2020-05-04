@@ -30,6 +30,8 @@ const fuzzy = require('fuzzy');
 const { transform } = require('ember-template-recast');
 const { log, error, ok, warning } = require('../utils/logging');
 
+const copyComponent = require('../utils/copy-component');
+
 
 const routePath = 'app/routes/helpdesk';
 const templatePath = 'app/templates/helpdesk';
@@ -94,12 +96,11 @@ fse.readFile(sourceTemplate, 'utf-8')
       };
     });
 
-    console.log(components);
     inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
     inquirer.prompt([{
       type: 'checkbox-plus',
       name: 'components',
-      message: 'Enter components',
+      message: 'Select components to copy/move:',
       pageSize: 10,
       highlight: true,
       searchable: true,
@@ -123,6 +124,25 @@ fse.readFile(sourceTemplate, 'utf-8')
     }]).then(function(answers) {
 
       console.log(answers.components);
+      answers.components.forEach(component => {
+
+        let _componentFolder = undefined;
+        let _componentName = component;
+        // component namespace is present
+        if(component.includes('/')) {
+          [_componentFolder, _componentName] = component.split('/');
+        }
+        let opts = {
+          componentFolder: _componentFolder,
+          componentName: _componentName,
+          addonName,
+          dryRun
+        };
+
+        copyComponent(opts);
+
+
+      });
 
     });
   });
