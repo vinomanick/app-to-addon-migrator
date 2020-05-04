@@ -1,0 +1,39 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/temp
+
+# dependencies
+/node_modules
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/
+/libpeerconnection.log
+npm-debug.log*
+pnpm-debug.log*
+testem.log
+.DS_Store
+/temp
+.vscode/*
+jsconfig.json
+package-lock.json
+
+yarn-error.log
+
+# IntelliJ files
+*.iml
+.idea/
+
+/testdist
+*.tap
+coverage_*
+test_results.xml
+testOutput
+
+cache/
+
+.scannerwork
