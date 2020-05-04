@@ -1,6 +1,6 @@
 {
   "name": "app-to-addon-migrator",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "An opinionated cli tool to migrate Ember components from app to addons within a Yarn workspace.  ",
   "main": "index.js",
   "bin": {
