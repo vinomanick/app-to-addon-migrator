@@ -1,6 +1,6 @@
 {
   "name": "app-to-addon-migrator",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "An opinionated cli tool to migrate Ember components from app to addons within a Yarn workspace.  ",
   "main": "index.js",
   "bin": {
@@ -16,7 +16,14 @@
     "deploy": "npm version patch && git push && git push --tags && npm publish",
     "deploy-major": "npm version major && git push && git push --tags && npm publish"
   },
-  "keywords": ["ember","engines","migration","cli","migrator","addons"],
+  "keywords": [
+    "ember",
+    "engines",
+    "migration",
+    "cli",
+    "migrator",
+    "addons"
+  ],
   "author": "Rajasegar Chandran <rajasegar.c@gmail.com>",
   "license": "MIT",
   "dependencies": {
