@@ -17,8 +17,8 @@ An opinionated cli tool to migrate Ember components from app to addons within a 
 - Your Ember app lives in the root of your project folder.
 - Engines live under `packages/engines` folder.
 - Addons live under `packages/addons` folder.
-- You are using [Yarn workspaces]().
-- You are using [POD]() structure for your components.
+- You are using [Yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/).
+- You are using [POD](https://cli.emberjs.com/release/advanced-use/project-layouts/#podslayout) structure for your components.
 
 ## Install
 ```
@@ -28,7 +28,7 @@ npm i -g app-to-addon-migrator
 ## Usage
 ```
 atam [entity] [entity-name] [dest-folder]
-atam route default dashboards-engine
+atam route default packages/engines/dashboards-engine
 ```
 
 After running the above command, the route `default` from `app/routes/default.js` will be
@@ -38,7 +38,7 @@ moved to `packages/engines/dashboards-engine/addon/routes/default.js`
 If you just want to see/verify the movement use the `--dry-run` or `-d` option.
 
 ```
-atam route default dashboards-engine -d
+atam route default packages/engines/dashboards-engine -d
 ```
 
 This will print something like (without actually copying the files):
@@ -59,31 +59,32 @@ packages/engines/dashboards-engine/addon/templates/default.hbs
 
 ## Commands:
 ```
-  atam adapter <adapter-name>             Copy an adapter from app to addon
-  <addon-name>
-  atam component [component-name]         Copy a component from app to addon
-  [addon-name]
-  atam constant [constant-name]           Copy a constant from app to addon
-  [addon-name]
-  atam helper [helper-name] [addon-name]  Copy a helper from app to addon
-  atam mixin [mixin-name] [addon-name]    Copy a mixin from app to addon
-  atam model [model-name] [addon-name]    Copy a model from app to addon
-  atam route [route-name] [addon-name]    Copy a route with controller from
+  atam adapter [adapter-name]               Copy an adapter from app to addon
+  [destination]
+  atam component [component-name]           Copy a component from app to addon
+  [destination]
+  atam constant [constant-name]             Copy a constant from app to addon
+  [destination]
+  atam helper [helper-name] [destination]   Copy a helper from app to addon
+  atam mixin [mixin-name] [destination]     Copy a mixin from app to addon
+  atam model [model-name] [destination]     Copy a model from app to addon
+  atam route [route-name] [destination]     Copy a route with controller from
                                             app to addon
-  atam routex [route-name] [addon-name]   Copy a route and its dependent
+  atam routex [route-name] [destination]    Copy a route and its dependent
                                             components from app to addon
-  atam storage [storage-name]             Copy a storage from app to addon
-  [addon-name]
-  atam util [util-name] [addon-name]      Copy a util from app to addon
-  atam validator [validator-name]         Copy a validator from app to addon
-  [addon-name]
+  atam storage [storage-name]               Copy a storage from app to addon
+  [destination]
+  atam util [util-name] [destination]       Copy a util from app to addon
+  atam validator [validator-name]           Copy a validator from app to addon
+  [destination]
 
 Options:
-  --version  Show version number                                       [boolean]
-  --help     Show help                                                 [boolean]
+  --version      Show version number                                   [boolean]
+  --help         Show help                                             [boolean]
   --dry-run, -d  Dry Run: Verify the movement without executing        [boolean]
   --pods, -p     Specify that the source components use PODS structure
                                                        [boolean] [default: true]
+
 
 ```
 

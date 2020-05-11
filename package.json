@@ -13,9 +13,10 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm version patch && git push && git push --tags && npm publish"
+    "deploy": "npm version patch && git push && git push --tags && npm publish",
+    "deploy-major": "npm version major && git push && git push --tags && npm publish"
   },
-  "keywords": [],
+  "keywords": ["ember","engines","migration","cli","migrator","addons"],
   "author": "Rajasegar Chandran <rajasegar.c@gmail.com>",
   "license": "MIT",
   "dependencies": {
