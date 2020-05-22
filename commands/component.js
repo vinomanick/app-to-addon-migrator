@@ -1,15 +1,16 @@
-'use strict';
+'use strict'
 
-module.exports.command = 'component [component-name] [destination]';
+module.exports.command = 'component [component-name] [destination]'
 
-module.exports.desc = 'Copy a component from app to addon';
+module.exports.desc = 'Copy a component from app to addon'
 
-module.exports.builder = function builder(yargs) {
+module.exports.builder = function builder (yargs) {
   yargs.positional('component-name', {
-    describe: 'The name of the component to copy',
+    describe: 'The name of the component to copy'
   })
+
   yargs.positional('destination', {
-    describe: 'The relative path of the addon folder to copy to',
+    describe: 'The relative path of the addon folder to copy to'
   })
 
   yargs.option('component-folder', {
@@ -18,17 +19,10 @@ module.exports.builder = function builder(yargs) {
     describe: 'The name of the component folder if it is namespaced within app/helpers',
     type: 'string'
   })
-};
+}
 
-module.exports.handler = async function handler(options) {
+module.exports.handler = async function handler (options) {
+  const copyComponent = require('../utils/copy-component')
 
-  const fs = require('fs');
-  const fse = require('fs-extra');
-
-  const { log, error, ok, warning } = require('../utils/logging');
-  const copyComponent = require('../utils/copy-component');
-
-  copyComponent(options);
-
-};
-
+  copyComponent(options)
+}

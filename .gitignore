@@ -33,6 +33,7 @@ yarn-error.log
 coverage_*
 test_results.xml
 testOutput
+.nyc_output
 
 cache/
 

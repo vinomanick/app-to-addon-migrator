@@ -13,8 +13,12 @@
   ],
   "scripts": {
     "test": "qunit tests/**/*-test.js",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "deploy": "npm version patch && git push && git push --tags && npm publish",
-    "deploy-major": "npm version major && git push && git push --tags && npm publish"
+    "deploy-major": "npm version major && git push && git push --tags && npm publish",
+    "lint": "eslint . --fix",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "ember",
@@ -36,11 +40,37 @@
     "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "execa": "^4.0.1",
-    "qunit": "^2.10.0"
+    "nyc": "^15.0.1",
+    "qunit": "^2.10.0",
+    "semantic-release": "^17.0.7"
+  },
+   "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "release(version): Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
   }
 }

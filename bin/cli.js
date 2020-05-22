@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
 require('yargs')
   .locale('en')
-  .scriptName("atam")
+  .scriptName('atam')
   .commandDir('../commands')
   .demandCommand()
   .help()
@@ -22,4 +22,4 @@ require('yargs')
     type: 'boolean',
     default: true
   })
-  .parse();
+  .parse()

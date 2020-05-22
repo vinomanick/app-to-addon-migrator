@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-module.exports.command = 'routex [route-name] [destination]';
+module.exports.command = 'routex [route-name] [destination]'
 
-module.exports.desc = 'Copy a route and its dependent components from app to addon';
+module.exports.desc = 'Copy a route and its dependent components from app to addon'
 
-module.exports.builder = function builder(yargs) {
+module.exports.builder = function builder (yargs) {
   yargs.positional('route-name', {
-    describe: 'The name of the route to copy',
+    describe: 'The name of the route to copy'
   })
   yargs.positional('destination', {
-    describe: 'The relative path of the addon folder to copy to',
+    describe: 'The relative path of the addon folder to copy to'
   })
   yargs.option('route-folder', {
     alias: 'f',
@@ -17,87 +17,70 @@ module.exports.builder = function builder(yargs) {
     describe: 'The name of the route folder if it is namespaced within app/helpers',
     type: 'string'
   })
-};
+}
 
-module.exports.handler = async function handler(options) {
+module.exports.handler = async function handler (options) {
+  const fse = require('fs-extra')
+  const inquirer = require('inquirer')
+  const fuzzy = require('fuzzy')
 
+  const { log } = require('../utils/logging')
+  const { transform } = require('ember-template-recast')
 
-  const fs = require('fs');
-  const fse = require('fs-extra');
-  const inquirer = require('inquirer');
-  const fuzzy = require('fuzzy');
-  const path = require('path');
+  const copyComponent = require('../utils/copy-component')
 
-  const { transform } = require('ember-template-recast');
-  const { log, error, ok, warning } = require('../utils/logging');
-
-  const copyComponent = require('../utils/copy-component');
-
-
-  const { routeName, destination, routeFolder, dryRun } = options;
-  const routePath = 'app/routes/helpdesk';
-  const templatePath = 'app/templates/helpdesk';
-  const packagePath = path.join('.', destination) || 'packages/engines';
-  const testPath = 'tests/unit/routes/helpdesk';
-  const controllerPath = 'app/controllers/helpdesk';
-  const controllerTestPath = 'tests/unit/controllers/helpdesk';
-
-
+  const { routeName, routeFolder, dryRun } = options
+  const templatePath = 'app/templates/helpdesk'
 
   // Moving route.js
-  log('Moving route.js');
-  log('---------------');
-  const sourceRoute = routeFolder ? 
-    `${routePath}/${routeFolder}/${routeName}.js`
-    : `${routePath}/${routeName}.js`;
+  log('Moving route.js')
+  log('---------------')
 
-  const sourceTemplate = routeFolder ? 
-    `${templatePath}/${routeFolder}/${routeName}.hbs`
-    : `${templatePath}/${routeName}.hbs`;
+  const sourceTemplate = routeFolder
+    ? `${templatePath}/${routeFolder}/${routeName}.hbs`
+    : `${templatePath}/${routeName}.hbs`
 
-  let components = [];
+  const components = []
 
   const ignoreList = [
     'action',
     'if',
     't',
     'component'
-  ];
+  ]
 
   const componentsFromAddon = [
     'ember-wormhole',
     'svg-jar',
     'power-select'
-  ];
+  ]
 
-  const pods = true;
-
-  function isValidComponent(name) {
-    return !ignoreList.includes(name) && !name.includes('.') && !componentsFromAddon.includes(name);
+  function isValidComponent (name) {
+    return !ignoreList.includes(name) && !name.includes('.') && !componentsFromAddon.includes(name)
   }
 
   fse.readFile(sourceTemplate, 'utf-8')
     .then((data) => {
-      console.log(data);
+      console.log(data)
       transform(data, () => {
-        return  {
-          BlockStatement(node) {
+        return {
+          BlockStatement (node) {
             if (isValidComponent(node.path.original)) {
-              components.push(node.path.original);
+              components.push(node.path.original)
             }
-            return node;
+            return node
           },
 
-          MustacheStatement(node) {
+          MustacheStatement (node) {
             if (isValidComponent(node.path.original)) {
-              components.push(node.path.original);
+              components.push(node.path.original)
             }
-            return node;
+            return node
           }
-        };
-      });
+        }
+      })
 
-      inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
+      inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'))
       inquirer.prompt([{
         type: 'checkbox-plus',
         name: 'components',
@@ -105,46 +88,37 @@ module.exports.handler = async function handler(options) {
         pageSize: 10,
         highlight: true,
         searchable: true,
-        source(answersSoFar, input) {
+        source (answersSoFar, input) {
+          input = input || ''
 
-          input = input || '';
+          return new Promise(function (resolve) {
+            const fuzzyResult = fuzzy.filter(input, components)
 
-          return new Promise(function(resolve) {
+            const data = fuzzyResult.map(function (element) {
+              return element.original
+            })
 
-            let fuzzyResult = fuzzy.filter(input, components);
-
-            let data = fuzzyResult.map(function(element) {
-              return element.original;
-            });
-
-            resolve(data);
-
-          });
-
+            resolve(data)
+          })
         }
-      }]).then(function(answers) {
-
-        console.log(answers.components);
+      }]).then(function (answers) {
+        console.log(answers.components)
         answers.components.forEach(component => {
-
-          let _componentFolder = undefined;
-          let _componentName = component;
+          let _componentFolder
+          let _componentName = component
           // component namespace is present
-          if(component.includes('/')) {
-            [_componentFolder, _componentName] = component.split('/');
+          if (component.includes('/')) {
+            [_componentFolder, _componentName] = component.split('/')
           }
-          let opts = {
+          const opts = {
             componentFolder: _componentFolder,
             componentName: _componentName,
-            addonName,
+            // addonName,
             dryRun
-          };
+          }
 
-          copyComponent(opts);
-
-
-        });
-
-      });
-    });
-};
+          copyComponent(opts)
+        })
+      })
+    })
+}
