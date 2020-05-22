@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.0.1...v2.1.0) (2020-05-22)
+
+
+### Features
+
+* **command:** new command for moving services ([916928c](https://github.com/rajasegar/app-to-addon-migrator/commit/916928c670b264a6ba5b3ae54ffe862fd9eadfb6))
+
 ## [2.0.1](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.0.0...v2.0.1) (2020-05-22)
 
 
