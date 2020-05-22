@@ -62,6 +62,15 @@ packages/engines/dashboards-engine/addon/templates/default.hbs
 ...
 ```
 
+### Folder namespace 
+If your source entities are namespaced within a folder you can use the `-f` option to specify the same 
+before copying. 
+Say for example you want to move a component called `widget` from `app/components/dashboards` 
+
+```
+atam component widget packages/engines/dashboards-engine -f dashboards
+```
+
 ## Commands:
 ```
   atam adapter [adapter-name]               Copy an adapter from app to addon
@@ -77,6 +86,8 @@ packages/engines/dashboards-engine/addon/templates/default.hbs
                                             app to addon
   atam routex [route-name] [destination]    Copy a route and its dependent
                                             components from app to addon
+  atam service [storage-name]               Copy a storage from app to addon
+  [destination]
   atam storage [storage-name]               Copy a storage from app to addon
   [destination]
   atam util [util-name] [destination]       Copy a util from app to addon
