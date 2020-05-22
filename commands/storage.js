@@ -21,7 +21,6 @@ module.exports.builder = function builder (yargs) {
 }
 
 module.exports.handler = async function handler (options) {
-  const argv = require('yargs')
   const path = require('path')
 
   const fse = require('fs-extra')
