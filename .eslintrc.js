@@ -20,7 +20,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
-    'node/no-unsupported-features': ['error', { ignores: ['modules'] }],
+    // 'node/no-unsupported-features': ['error', { ignores: ['modules'] }],
   },
   overrides: [
     {

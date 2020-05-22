@@ -24,7 +24,6 @@ QUnit.module('atam-cli', function (hooks) {
       await fs.remove(path.join(FIXTURE_PATH, dest, 'addon/controllers/sample.js'));
       await fs.remove(path.join(FIXTURE_PATH, dest, 'app/controllers/sample.js'));
       await fs.remove(path.join(FIXTURE_PATH, dest, 'tests/unit/controllers/sample-test.js'));
-
     });
 
     QUnit.test('should move a route', async function (assert) {
@@ -68,7 +67,6 @@ QUnit.module('atam-cli', function (hooks) {
       assert.ok(
         fs.pathExistsSync(path.join(FIXTURE_PATH, dest, 'tests/unit/controllers/sample-test.js'))
       );
-
     });
 
     QUnit.test('should not move an route with dry-run', async function (assert) {
@@ -89,7 +87,6 @@ QUnit.module('atam-cli', function (hooks) {
       assert.notOk(
         fs.pathExistsSync(path.join(FIXTURE_PATH, dest, 'tests/unit/controllers/sample-test.js'))
       );
-
     });
 
     QUnit.test('should emit a warning if there is no test', async function (assert) {
@@ -104,7 +101,6 @@ QUnit.module('atam-cli', function (hooks) {
 
       assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, dest, 'addon/controllers/sample2.js')));
       assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, dest, 'app/controllers/sample2.js')));
-
 
       assert.ok(result.stdout.includes('WARNING'));
     });

@@ -16,7 +16,7 @@
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "deploy": "npm version patch && git push && git push --tags && npm publish",
     "deploy-major": "npm version major && git push && git push --tags && npm publish",
-    "lint": "eslint . --fix",
+    "lint": "eslint .",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "semantic-release": "semantic-release"
   },
