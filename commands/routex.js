@@ -1,124 +1,118 @@
-'use strict'
+'use strict';
 
-module.exports.command = 'routex [route-name] [destination]'
+module.exports.command = 'routex [route-name] [destination]';
 
-module.exports.desc = 'Copy a route and its dependent components from app to addon'
+module.exports.desc = 'Copy a route and its dependent components from app to addon';
 
-module.exports.builder = function builder (yargs) {
+module.exports.builder = function builder(yargs) {
   yargs.positional('route-name', {
-    describe: 'The name of the route to copy'
-  })
+    describe: 'The name of the route to copy',
+  });
   yargs.positional('destination', {
-    describe: 'The relative path of the addon folder to copy to'
-  })
+    describe: 'The relative path of the addon folder to copy to',
+  });
   yargs.option('route-folder', {
     alias: 'f',
     demandOption: false,
     describe: 'The name of the route folder if it is namespaced within app/helpers',
-    type: 'string'
-  })
-}
+    type: 'string',
+  });
+};
 
-module.exports.handler = async function handler (options) {
-  const fse = require('fs-extra')
-  const inquirer = require('inquirer')
-  const fuzzy = require('fuzzy')
+module.exports.handler = async function handler(options) {
+  const fse = require('fs-extra');
+  const inquirer = require('inquirer');
+  const fuzzy = require('fuzzy');
 
-  const { log } = require('../utils/logging')
-  const { transform } = require('ember-template-recast')
+  const { log } = require('../utils/logging');
+  const { transform } = require('ember-template-recast');
 
-  const copyComponent = require('../utils/copy-component')
+  const copyComponent = require('../utils/copy-component');
 
-  const { routeName, routeFolder, dryRun } = options
-  const templatePath = 'app/templates/helpdesk'
+  const { routeName, routeFolder, dryRun } = options;
+  const templatePath = 'app/templates/helpdesk';
 
   // Moving route.js
-  log('Moving route.js')
-  log('---------------')
+  log('Moving route.js');
+  log('---------------');
 
   const sourceTemplate = routeFolder
     ? `${templatePath}/${routeFolder}/${routeName}.hbs`
-    : `${templatePath}/${routeName}.hbs`
+    : `${templatePath}/${routeName}.hbs`;
 
-  const components = []
+  const components = [];
 
-  const ignoreList = [
-    'action',
-    'if',
-    't',
-    'component'
-  ]
+  const ignoreList = ['action', 'if', 't', 'component'];
 
-  const componentsFromAddon = [
-    'ember-wormhole',
-    'svg-jar',
-    'power-select'
-  ]
+  const componentsFromAddon = ['ember-wormhole', 'svg-jar', 'power-select'];
 
-  function isValidComponent (name) {
-    return !ignoreList.includes(name) && !name.includes('.') && !componentsFromAddon.includes(name)
+  function isValidComponent(name) {
+    return !ignoreList.includes(name) && !name.includes('.') && !componentsFromAddon.includes(name);
   }
 
-  fse.readFile(sourceTemplate, 'utf-8')
-    .then((data) => {
-      console.log(data)
-      transform(data, () => {
-        return {
-          BlockStatement (node) {
-            if (isValidComponent(node.path.original)) {
-              components.push(node.path.original)
-            }
-            return node
-          },
-
-          MustacheStatement (node) {
-            if (isValidComponent(node.path.original)) {
-              components.push(node.path.original)
-            }
-            return node
+  fse.readFile(sourceTemplate, 'utf-8').then((data) => {
+    console.log(data);
+    transform(data, () => {
+      return {
+        BlockStatement(node) {
+          if (isValidComponent(node.path.original)) {
+            components.push(node.path.original);
           }
-        }
-      })
+          return node;
+        },
 
-      inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'))
-      inquirer.prompt([{
-        type: 'checkbox-plus',
-        name: 'components',
-        message: 'Select [spacebar] components to copy/move:',
-        pageSize: 10,
-        highlight: true,
-        searchable: true,
-        source (answersSoFar, input) {
-          input = input || ''
+        MustacheStatement(node) {
+          if (isValidComponent(node.path.original)) {
+            components.push(node.path.original);
+          }
+          return node;
+        },
+      };
+    });
 
-          return new Promise(function (resolve) {
-            const fuzzyResult = fuzzy.filter(input, components)
+    inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
+    inquirer
+      .prompt([
+        {
+          type: 'checkbox-plus',
+          name: 'components',
+          message: 'Select [spacebar] components to copy/move:',
+          pageSize: 10,
+          highlight: true,
+          searchable: true,
+          source(answersSoFar, input) {
+            input = input || '';
 
-            const data = fuzzyResult.map(function (element) {
-              return element.original
-            })
+            return new Promise(function (resolve) {
+              const fuzzyResult = fuzzy.filter(input, components);
 
-            resolve(data)
-          })
-        }
-      }]).then(function (answers) {
-        console.log(answers.components)
-        answers.components.forEach(component => {
-          let _componentFolder
-          let _componentName = component
+              const data = fuzzyResult.map(function (element) {
+                return element.original;
+              });
+
+              resolve(data);
+            });
+          },
+        },
+      ])
+      .then(function (answers) {
+        console.log(answers.components);
+        answers.components.forEach((component) => {
+          let _componentFolder;
+          let _componentName = component;
           // component namespace is present
           if (component.includes('/')) {
-            [_componentFolder, _componentName] = component.split('/')
+            [_componentFolder, _componentName] = component.split('/');
           }
           const opts = {
             componentFolder: _componentFolder,
             componentName: _componentName,
             // addonName,
-            dryRun
-          }
+            dryRun,
+          };
 
-          copyComponent(opts)
-        })
-      })
-    })
-}
+          copyComponent(opts);
+        });
+      });
+  });
+};

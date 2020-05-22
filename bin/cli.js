@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 require('yargs')
   .locale('en')
@@ -13,13 +13,13 @@ require('yargs')
     alias: 'd',
     demandOption: false,
     describe: 'Dry Run: Verify the movement without executing',
-    type: 'boolean'
+    type: 'boolean',
   })
   .option('pods', {
     alias: 'p',
     demandOption: false,
     describe: 'Specify that the source components use PODS structure',
     type: 'boolean',
-    default: true
+    default: true,
   })
-  .parse()
+  .parse();
