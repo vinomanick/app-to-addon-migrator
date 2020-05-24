@@ -1,29 +1,8 @@
-'use strict';
-
-module.exports.command = 'adapter [adapter-name] [destination]';
-module.exports.desc = 'Copy an adapter from app to addon';
-
-module.exports.builder = function builder(yargs) {
-  yargs.positional('adapter-name', {
-    describe: 'The name of the adapter to copy',
-  });
-  yargs.positional('destination', {
-    describe: 'The relative path of the addon folder to copy to',
-  });
-
-  yargs.option('adapter-folder', {
-    alias: 'f',
-    demandOption: false,
-    describe: 'The name of the helper folder if it is namespaced within app/helpers',
-    type: 'string',
-  });
-};
-
-module.exports.handler = async function handler(options) {
+module.exports.handler = function (options) {
   const fs = require('fs');
   const fse = require('fs-extra');
   const path = require('path');
-  const { log, error, ok, warning } = require('../utils/logging');
+  const { log, ok, warning } = require('../../utils/logging');
 
   const { adapterName, destination, adapterFolder, dryRun } = options;
 
@@ -42,12 +21,8 @@ module.exports.handler = async function handler(options) {
   log(destadapter);
 
   if (!dryRun) {
-    fse
-      .copy(sourceadapter, destadapter)
-      .then(() => {
-        ok(`Success: Adapter ${adapterName}.js copied`);
-      })
-      .catch((err) => error(err));
+    fse.copySync(sourceadapter, destadapter);
+    ok(`Success: Adapter ${adapterName}.js copied`);
   }
 
   // Moving adapter tests
@@ -62,12 +37,8 @@ module.exports.handler = async function handler(options) {
   log(destTest);
   if (!dryRun) {
     if (fs.existsSync(sourceTest)) {
-      fse
-        .copy(sourceTest, destTest)
-        .then(() => {
-          ok(`Success: Adapter Test ${adapterName} copied`);
-        })
-        .catch((err) => error(err));
+      fse.copySync(sourceTest, destTest);
+      ok(`Success: Adapter Test ${adapterName} copied`);
     } else {
       warning(`WARNING: There are no unit tests for adapter ${adapterName}`);
     }
@@ -83,13 +54,7 @@ module.exports.handler = async function handler(options) {
   const adapterBody = `export { default } from '${addonName}/adapters/${adapterName}';`;
   log(appadapter);
   if (!dryRun) {
-    fse
-      .outputFile(appadapter, adapterBody)
-      .then(() => {
-        ok(`Success: Adapter ${adapterName}.js created in app`);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    fse.outputFileSync(appadapter, adapterBody);
+    ok(`Success: Adapter ${adapterName}.js created in app`);
   }
 };
