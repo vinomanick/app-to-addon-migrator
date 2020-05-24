@@ -43,7 +43,8 @@ module.exports.handler = async function handler(options) {
   log(destconstant);
 
   if (!dryRun) {
-    fse.copy(sourceconstant, destconstant) //eslint-disable-line
+    fse
+      .copy(sourceconstant, destconstant) //eslint-disable-line
       .then(() => {
         ok(`Success: constant ${constantName}.js copied`);
       })
