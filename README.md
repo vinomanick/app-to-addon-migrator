@@ -37,7 +37,7 @@ npm i -g app-to-addon-migrator
 ateam
 ```
 
-![ateam demo](https://terminalizer.com/view/3cc59b393937)
+![ateam demo](render1590322152486.gif)
 
 ### 2. atam (classic CLI)
 ```
