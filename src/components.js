@@ -6,8 +6,9 @@ const searchDest = require('../utils/search-dest');
 
 module.exports.moveComponent = function () {
   const _components = walkSync('app/components', { directories: false });
-  const components = _components.filter((c) => !c.includes('template.hbs'))
-        .map((c) => c.replace('/component.js',''));
+  const components = _components
+    .filter((c) => !c.includes('template.hbs'))
+    .map((c) => c.replace('/component.js', ''));
 
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
   function searchComponents(answers, input) {

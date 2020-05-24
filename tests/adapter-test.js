@@ -59,22 +59,36 @@ QUnit.module('atam-cli', function (hooks) {
 
       assert.equal(result.exitCode, 0, 'exited with zero');
 
-      assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample.js')));
+      assert.ok(
+        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample.js'))
+      );
       assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'app/adapters/sample.js')));
       assert.ok(
-        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample-test.js'))
+        fs.pathExistsSync(
+          path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample-test.js')
+        )
       );
     });
 
     QUnit.test('should not move an adapter with dry-run', async function (assert) {
-      const result = await execa(EXECUTABLE_PATH, ['adapter', 'sample', destination, '-d'], execOpts);
+      const result = await execa(
+        EXECUTABLE_PATH,
+        ['adapter', 'sample', destination, '-d'],
+        execOpts
+      );
 
       assert.equal(result.exitCode, 0, 'exited with zero');
 
-      assert.notOk(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample.js')));
-      assert.notOk(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'app/adapters/sample.js')));
       assert.notOk(
-        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample-test.js'))
+        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample.js'))
+      );
+      assert.notOk(
+        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'app/adapters/sample.js'))
+      );
+      assert.notOk(
+        fs.pathExistsSync(
+          path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample-test.js')
+        )
       );
     });
 
@@ -83,10 +97,14 @@ QUnit.module('atam-cli', function (hooks) {
 
       assert.equal(result.exitCode, 0, 'exited with zero');
 
-      assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample2.js')));
+      assert.ok(
+        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'addon/adapters/sample2.js'))
+      );
       assert.ok(fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'app/adapters/sample2.js')));
       assert.notOk(
-        fs.pathExistsSync(path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample2-test.js'))
+        fs.pathExistsSync(
+          path.join(FIXTURE_PATH, destination, 'tests/unit/adapters/sample2-test.js')
+        )
       );
       assert.ok(result.stdout.includes('WARNING'));
     });

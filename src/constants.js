@@ -7,7 +7,9 @@ const walkSync = require('walk-sync');
 const searchDest = require('../utils/search-dest');
 
 module.exports.moveConstant = function moveConstant() {
-  const constants = walkSync('app/constants', { directories: false }).map((a) => a.replace('.js', ''));
+  const constants = walkSync('app/constants', { directories: false }).map((a) =>
+    a.replace('.js', '')
+  );
 
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 

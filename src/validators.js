@@ -6,7 +6,9 @@ const walkSync = require('walk-sync');
 const searchDest = require('../utils/search-dest');
 
 module.exports.moveValidator = function moveValidator() {
-  const validators = walkSync('app/validators', { directories: false }).map((a) => a.replace('.js', ''));
+  const validators = walkSync('app/validators', { directories: false }).map((a) =>
+    a.replace('.js', '')
+  );
 
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 

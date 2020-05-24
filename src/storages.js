@@ -6,7 +6,9 @@ const walkSync = require('walk-sync');
 const searchDest = require('../utils/search-dest');
 
 module.exports.moveStorage = function moveStorage() {
-  const storages = walkSync('app/storages', { directories: false }).map((a) => a.replace('.js', ''));
+  const storages = walkSync('app/storages', { directories: false }).map((a) =>
+    a.replace('.js', '')
+  );
 
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 

@@ -6,7 +6,9 @@ const walkSync = require('walk-sync');
 const searchDest = require('../utils/search-dest');
 
 module.exports.moveAdapter = function moveAdapter() {
-  const adapters = walkSync('app/adapters', { directories: false }).map((a) => a.replace('.js', ''));
+  const adapters = walkSync('app/adapters', { directories: false }).map((a) =>
+    a.replace('.js', '')
+  );
 
   inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 
@@ -49,4 +51,3 @@ module.exports.moveAdapter = function moveAdapter() {
     adapter.handler(answers);
   });
 };
-

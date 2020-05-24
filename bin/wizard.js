@@ -15,80 +15,78 @@ const { moveUtil } = require('../src/utils');
 const { moveValidator } = require('../src/validators');
 
 const commandsPrompt = {
-    type: 'list',
-    name: 'command',
-    message: 'Which one you want to move?',
-    choices: [
-      'adapter',
-      'component',
-      'constant',
-      'helper',
-      'mixin',
-      'model',
-      'route',
-      'service',
-      'storage',
-      'util',
-      'validator'
-    ]
-  };
+  type: 'list',
+  name: 'command',
+  message: 'Which one you want to move?',
+  choices: [
+    'adapter',
+    'component',
+    'constant',
+    'helper',
+    'mixin',
+    'model',
+    'route',
+    'service',
+    'storage',
+    'util',
+    'validator',
+  ],
+};
 
 function ask() {
-  inquirer.prompt(commandsPrompt).then(answers => {
+  inquirer.prompt(commandsPrompt).then((answers) => {
+    switch (answers.command) {
+      case 'adapter':
+        moveAdapter();
+        break;
 
-    switch(answers.command) {
-    case 'adapter':
-      moveAdapter();
-      break;
+      case 'component':
+        moveComponent();
+        break;
 
-    case 'component':
-      moveComponent();
-      break;
+      case 'constant':
+        moveConstant();
+        break;
 
-    case 'constant':
-      moveConstant();
-      break;
+      case 'helper':
+        moveHelper();
+        break;
 
-    case 'helper':
-      moveHelper();
-      break;
+      case 'mixin':
+        moveMixin();
+        break;
 
-    case 'mixin':
-      moveMixin();
-      break;
+      case 'model':
+        moveModel();
+        break;
 
-    case 'model':
-      moveModel();
-      break;
+      case 'route':
+        moveRoute();
+        break;
 
-    case 'route':
-      moveRoute();
-      break;
+      case 'service':
+        moveService();
+        break;
 
-    case 'service':
-      moveService();
-      break;
+      case 'storage':
+        moveStorage();
+        break;
 
-    case 'storage':
-      moveStorage();
-      break;
+      case 'util':
+        moveUtil();
+        break;
 
-    case 'util':
-      moveUtil();
-      break;
+      case 'validator':
+        moveValidator();
+        break;
 
-    case 'validator':
-      moveValidator();
-      break;
-
-    default:
-      break;
+      default:
+        break;
     }
 
     if (answers.askAgain) {
       ask();
     }
-
   });
 }
 
