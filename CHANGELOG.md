@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.2.0...v2.2.1) (2020-05-24)
+
+
+### Bug Fixes
+
+* add src folder to npm publish ([b506c25](https://github.com/rajasegar/app-to-addon-migrator/commit/b506c252d82ce1e25ac5d2b04be8b68a8e1a21ac))
+
 # [2.2.0](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.1.0...v2.2.0) (2020-05-24)
 
 
