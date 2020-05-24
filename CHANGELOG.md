@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.1.0...v2.2.0) (2020-05-24)
+
+
+### Features
+
+* new cli wizard with inquirer prompts ([c4a1f9e](https://github.com/rajasegar/app-to-addon-migrator/commit/c4a1f9e4ab1276f990ea06d31ed5fd1e0751281d))
+
 # [2.1.0](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.0.1...v2.1.0) (2020-05-22)
 
 
