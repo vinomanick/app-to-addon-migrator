@@ -31,6 +31,13 @@ npm i -g app-to-addon-migrator
 ```
 
 ## Usage
+
+### 1. ateam (wizard UI)
+```
+ateam
+```
+
+### 2. atam (classic CLI)
 ```
 atam [entity] [entity-name] [dest-folder]
 atam route default packages/engines/dashboards-engine

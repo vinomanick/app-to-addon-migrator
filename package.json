@@ -10,7 +10,8 @@
   "files": [
     "bin",
     "commands",
-    "utils"
+    "utils",
+    "src"
   ],
   "scripts": {
     "test": "qunit tests/*-test.js",
