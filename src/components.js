@@ -29,7 +29,7 @@ module.exports.moveComponent = function () {
     {
       type: 'autocomplete',
       name: 'componentName',
-      message: 'Enter the adapter name:',
+      message: 'Enter the component name:',
       source: searchComponents,
     },
     {
