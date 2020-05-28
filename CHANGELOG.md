@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.2.1...v2.2.2) (2020-05-26)
+
+
+### Bug Fixes
+
+* component name prompt issue fixed ([c2bcc9c](https://github.com/rajasegar/app-to-addon-migrator/commit/c2bcc9c38ce7d6d154eca868a3b417de83ce10f9))
+
 ## [2.2.1](https://github.com/rajasegar/app-to-addon-migrator/compare/v2.2.0...v2.2.1) (2020-05-24)
 
 
