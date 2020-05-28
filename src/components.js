@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
-const command = require('../commands/component');
+const command = require('./commands/component');
 const fuzzy = require('fuzzy');
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveComponent = function () {
   const _components = walkSync('app/components', { directories: false });

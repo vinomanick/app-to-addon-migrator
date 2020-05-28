@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const helper = require('../commands/helper');
+const helper = require('./commands/helper');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveHelper = function moveHelper() {
   const helpers = walkSync('app/helpers').map((a) => a.replace('.js', ''));

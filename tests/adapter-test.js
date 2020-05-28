@@ -29,6 +29,7 @@ QUnit.module('atam-cli', function (hooks) {
 
     QUnit.test('should move an adapter', async function (assert) {
       const result = await execa(EXECUTABLE_PATH, ['adapter', 'sample', destination], execOpts);
+      debugger
 
       assert.equal(result.exitCode, 0, 'exited with zero');
 

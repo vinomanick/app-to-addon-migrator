@@ -9,8 +9,6 @@
   },
   "files": [
     "bin",
-    "commands",
-    "utils",
     "src"
   ],
   "scripts": {

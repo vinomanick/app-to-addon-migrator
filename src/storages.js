@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const storage = require('../commands/storage');
+const storage = require('./commands/storage');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveStorage = function moveStorage() {
   const storages = walkSync('app/storages', { directories: false }).map((a) =>

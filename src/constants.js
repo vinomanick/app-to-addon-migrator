@@ -1,10 +1,10 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const constant = require('../commands/constant');
+const constant = require('./commands/constant');
 
 const walkSync = require('walk-sync');
 
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveConstant = function moveConstant() {
   const constants = walkSync('app/constants', { directories: false }).map((a) =>

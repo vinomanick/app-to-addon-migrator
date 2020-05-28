@@ -4,7 +4,7 @@
 require('yargs')
   .locale('en')
   .scriptName('atam')
-  .commandDir('../commands')
+  .commandDir('../src/commands')
   .demandCommand()
   .help()
   .usage('atam <command> <params> <options>')

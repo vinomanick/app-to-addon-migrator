@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const model = require('../commands/model');
+const model = require('./commands/model');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveModel = function moveModel() {
   const models = walkSync('app/models').map((a) => a.replace('.js', ''));

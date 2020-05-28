@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const validator = require('../commands/validator');
+const validator = require('./commands/validator');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveValidator = function moveValidator() {
   const validators = walkSync('app/validators', { directories: false }).map((a) =>

@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const util = require('../commands/util');
+const util = require('./commands/util');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveUtil = function moveUtil() {
   const utils = walkSync('app/utils', { directories: false }).map((a) => a.replace('.js', ''));

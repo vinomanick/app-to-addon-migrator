@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const adapter = require('../commands/adapter');
+const adapter = require('./commands/adapter');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveAdapter = function moveAdapter() {
   const adapters = walkSync('app/adapters', { directories: false }).map((a) =>

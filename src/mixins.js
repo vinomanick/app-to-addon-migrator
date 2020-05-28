@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
-const mixin = require('../commands/mixin');
+const mixin = require('./commands/mixin');
 
 const walkSync = require('walk-sync');
-const searchDest = require('../utils/search-dest');
+const searchDest = require('./utils/search-dest');
 
 module.exports.moveMixin = function () {
   const mixins = walkSync('app/mixins', { directories: false }).map((a) => a.replace('.js', ''));
