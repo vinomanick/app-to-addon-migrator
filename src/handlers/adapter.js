@@ -2,7 +2,7 @@ module.exports.handler = function (options) {
   const fs = require('fs');
   const fse = require('fs-extra');
   const path = require('path');
-  const { log, ok, warning } = require('../../utils/logging');
+  const { log, ok, warning } = require('../utils/logging');
 
   const { adapterName, destination, adapterFolder, dryRun } = options;
 
