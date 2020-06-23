@@ -1,10 +1,11 @@
 import Component from '@ember/component';
-import layout from 'some_path';
 import { run } from '@ember/runloop';
+import layout from './template';
 import { set } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  classNames: ['page-wrapper'],
+  classNames: ['__page-layout__page-wrapper'],
   layout: layout,
   classNameBindings: ['sidebarEnabled:sidebar-present'],
   sidebarEnabled: false,
@@ -12,6 +13,7 @@ export default Component.extend({
 
   didRender() {
     this._super(...arguments);
+    this.interactivityTracking.trackOnce('FirstWrapperRender');
   },
 
   actions: {
