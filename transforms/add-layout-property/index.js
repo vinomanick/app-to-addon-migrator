@@ -6,12 +6,9 @@ const addLayoutImport = (j, root, layoutPath) => {
   let oldImport = allImports.find(j.ImportDefaultSpecifier, {
     local: { name: 'layout' },
   });
-  console.log('Inside all layout import');
   if (oldImport.length) {
-    console.log('Inside old import');
     oldImport.closest(j.ImportDeclaration).get(0).node.source = j.literal(layoutPath);
   } else {
-    console.log('Inside old import else');
     let lastImport = allImports.at(allImports.length - 1);
     let newSpecifier = j.importDefaultSpecifier(j.identifier('layout'));
     let newImport = j.importDeclaration([newSpecifier], j.literal(layoutPath));
@@ -27,20 +24,24 @@ const addLayoutProperty = (j, root) => {
       callee: { object: { name: 'Component' } },
     })
     .get(0);
+  console.log('component find');
   let componentArguments = component.node.arguments;
-  let componentObject = componentArguments[componentArguments - 1];
+  let componentObject = componentArguments[componentArguments.length - 1];
+  console.log(componentObject);
   let existingLayout = componentObject.properties.findIndex((path) => path.key.name === 'layout');
+  console.log(existingLayout);
   if (existingLayout !== -1) {
     componentObject.properties.splice(existingLayout, 1);
   }
+  console.log('out if');
   let layoutProperty = j.objectProperty(j.identifier('layout'), j.identifier('layout'));
   layoutProperty.shorthand = true;
   componentObject.properties.unshift(layoutProperty);
+  console.log('All layout exit');
   return componentObject;
 };
 
 module.exports = function transformer(file, api) {
-  console.log('Inside transformer');
   const j = getParser(api);
   const { layoutPath } = getOptions();
   const root = j(file.source);
@@ -48,6 +49,7 @@ module.exports = function transformer(file, api) {
   addLayoutImport(j, root, layoutPath);
   addLayoutProperty(j, root);
 
+  console.log(root.toSource());
   return root.toSource({
     quote: 'single',
   });

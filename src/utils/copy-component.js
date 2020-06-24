@@ -66,7 +66,7 @@ module.exports = function (options) {
           let { dir, name } = path.parse(relativePath);
           let layoutPath = path.join(dir, name);
           try {
-            await execa(CODEMOD_EXEC_PATH, [
+            await execa('atam-codemod', [
               'add-layout-property',
               destComponent,
               '--layoutPath',
