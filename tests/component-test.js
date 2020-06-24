@@ -33,7 +33,7 @@ QUnit.module('atam-cli', function (hooks) {
       );
     });
 
-    QUnit.test('should move a component', async function (assert) {
+    QUnit.test('should move a component vino', async function (assert) {
       const result = await execa(EXECUTABLE_PATH, ['component', 'sample3', dest], execOpts);
 
       assert.equal(result.exitCode, 0, 'exited with zero');

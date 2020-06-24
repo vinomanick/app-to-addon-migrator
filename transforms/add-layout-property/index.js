@@ -6,9 +6,12 @@ const addLayoutImport = (j, root, layoutPath) => {
   let oldImport = allImports.find(j.ImportDefaultSpecifier, {
     local: { name: 'layout' },
   });
+  console.log('Inside all layout import');
   if (oldImport.length) {
+    console.log('Inside old import');
     oldImport.closest(j.ImportDeclaration).get(0).node.source = j.literal(layoutPath);
   } else {
+    console.log('Inside old import else');
     let lastImport = allImports.at(allImports.length - 1);
     let newSpecifier = j.importDefaultSpecifier(j.identifier('layout'));
     let newImport = j.importDeclaration([newSpecifier], j.literal(layoutPath));
@@ -18,12 +21,14 @@ const addLayoutImport = (j, root, layoutPath) => {
 };
 
 const addLayoutProperty = (j, root) => {
+  console.log('Add layout property');
   let component = root
     .find(j.CallExpression, {
       callee: { object: { name: 'Component' } },
     })
     .get(0);
-  let componentObject = component.node.arguments[0];
+  let componentArguments = component.node.arguments;
+  let componentObject = componentArguments[componentArguments - 1];
   let existingLayout = componentObject.properties.findIndex((path) => path.key.name === 'layout');
   if (existingLayout !== -1) {
     componentObject.properties.splice(existingLayout, 1);
@@ -35,6 +40,7 @@ const addLayoutProperty = (j, root) => {
 };
 
 module.exports = function transformer(file, api) {
+  console.log('Inside transformer');
   const j = getParser(api);
   const { layoutPath } = getOptions();
   const root = j(file.source);

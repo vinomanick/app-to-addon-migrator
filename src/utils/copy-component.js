@@ -59,18 +59,27 @@ module.exports = function (options) {
       .copy(sourceComponent, destComponent)
       .then(async () => {
         // Adding layout property to the addon component file.
+        log('\n Inside copy component', CODEMOD_EXEC_PATH);
         if (fs.existsSync(sourceTemplate)) {
+          log('\n File exist');
           let relativePath = path.relative(destComponent, destTemplate);
           let { dir, name } = path.parse(relativePath);
           let layoutPath = path.join(dir, name);
-          await execa(CODEMOD_EXEC_PATH, [
-            'add-layout-property',
-            destComponent,
-            '--layoutPath',
-            layoutPath,
-          ]);
+          try {
+            await execa(CODEMOD_EXEC_PATH, [
+              'add-layout-property',
+              destComponent,
+              '--layoutPath',
+              layoutPath,
+            ]);
+          } catch (error) {
+            console.log(error);
+          }
+
+          log('\n Success: Added layout property');
           ok(`Success: Added layout property to the ${componentName}.js`);
         }
+        log('\n Success: Added Component');
         ok(`Success: Component ${componentName}.js moved`);
       })
       .catch((err) => error(err));
