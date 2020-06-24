@@ -6,14 +6,15 @@ const addLayoutImport = (j, root, layoutPath) => {
   let oldImport = allImports.find(j.ImportDefaultSpecifier, {
     local: { name: 'layout' },
   });
-  oldImport.closest(j.ImportDeclaration).remove();
-  allImports = root.find(j.ImportDeclaration);
-  let lastImport = allImports.at(allImports.length - 1);
-  let newImport = j.importDeclaration([], j.literal(layoutPath));
-  let newSpecifier = j.importDefaultSpecifier(j.identifier('layout'));
-  newImport.specifiers.push(newSpecifier);
-  lastImport.insertAfter(newImport);
-  return newImport;
+  if (oldImport.length) {
+    oldImport.closest(j.ImportDeclaration).get(0).node.source = j.literal(layoutPath);
+  } else {
+    let lastImport = allImports.at(allImports.length - 1);
+    let newSpecifier = j.importDefaultSpecifier(j.identifier('layout'));
+    let newImport = j.importDeclaration([newSpecifier], j.literal(layoutPath));
+    lastImport.insertAfter(newImport);
+  }
+  return allImports;
 };
 
 const addLayoutProperty = (j, root) => {
